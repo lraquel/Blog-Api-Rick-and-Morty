@@ -12,7 +12,17 @@ const getState = ({ getStore, getActions, setStore }) => {
 					background: "white",
 					initial: "white"
 				}
-			]
+			],
+
+			listCharacters: [],
+
+			favorites: [],
+
+			pagina: {}
+
+		
+			
+
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -37,8 +47,45 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				//reset the global store
 				setStore({ demo: demo });
-			}
-		}
+			},
+
+			fectCharacters: async (pagina) => {
+				let URL = null
+                if (!pagina ) { URL = "https://rickandmortyapi.com/api/character"; }
+				else URL = pagina;
+				const CONFIG = {
+                    headers: {
+                        "Content-Type": "application/json",
+
+                    },
+                    method: "GET",
+                };
+                const response = await fetch(URL, CONFIG);
+				const json = await response.json();
+				
+				console.log(">>DATA>>", json);
+				setStore({ 
+					listCharacters: json.results,
+					pagina: json.info
+				})
+
+            },
+
+			setFavorites: (name) => {
+				const store = getStore();
+				setStore({ favorites: [ ...store.favorites, name]})
+			},
+
+			delFavorites: (index) => {
+                const store = getStore();
+				const removFavorites = store.favorites.filter((_item, i) => i !== index);
+                setStore({ favorites: removFavorites })
+            },
+
+			
+        },
+
+		
 	};
 };
 
