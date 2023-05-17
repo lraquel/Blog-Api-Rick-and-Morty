@@ -23,10 +23,5 @@ export const Home = () => {
 			</Row>
 		</Container>
 
-
-
-
-
-
 	)
 };
